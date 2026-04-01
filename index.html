@@ -16,6 +16,7 @@
             color: #ffffff; 
             font-family: 'Inter', sans-serif; 
             margin: 0; 
+            padding: 0;
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
         }
@@ -32,10 +33,7 @@
             background: linear-gradient(90deg, #5249f3 0%, #eb4696 100%);
             border-radius: 24px;
             box-shadow: 0 10px 30px -5px rgba(82, 73, 243, 0.4);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
-        .btn-viral:active { transform: scale(0.95); opacity: 0.9; }
 
         .pulse-dot {
             width: 8px;
@@ -52,15 +50,10 @@
             100% { transform: scale(0.9); opacity: 0.6; }
         }
 
-        .verify-gradient {
-            background: linear-gradient(135deg, #0d1a13 0%, #050505 100%);
-            border: 1px solid rgba(34, 197, 94, 0.25);
-        }
-
         .shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
             background-size: 200% 100%;
-            animation: shimmer 2s infinite;
+            animation: shimmer 3s infinite linear;
         }
 
         @keyframes shimmer {
@@ -73,43 +66,49 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;
 
         const App = () => {
             const [verified, setVerified] = useState(false);
+            const [counter, setCounter] = useState(128);
 
-            const handleAction = () => {
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setCounter(prev => prev + Math.floor(Math.random() * 3));
+                }, 4000);
+                return () => clearInterval(interval);
+            }, []);
+
+            const handleVerify = () => {
                 window.open('https://www.tiktok.com/@z22', '_blank');
-                setTimeout(() => setVerified(true), 4000);
+                setTimeout(() => setVerified(true), 3000);
             };
 
             return (
-                <div className="max-w-md mx-auto min-h-screen p-6 pb-20 space-y-7">
-                    {/* Header Principal */}
-                    <div className="flex justify-between items-start pt-4">
+                <div className="max-w-md mx-auto min-h-screen p-6 pb-24 space-y-7">
+                    {/* Header - Basado en referencias */}
+                    <div className="flex justify-between items-start pt-6">
                         <div className="space-y-1">
                             <div className="flex items-center gap-2">
-                                <span className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em]">Online Node</span>
+                                <span className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em]">Nodo Online</span>
                                 <div className="pulse-dot"></div>
                             </div>
                             <h1 className="text-4xl font-black italic tracking-tighter uppercase leading-none">@z22</h1>
                         </div>
                         <div className="text-right">
-                            <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Nuevos</p>
-                            <p className="text-4xl font-black text-white italic">+0 <span className="text-orange-500 text-2xl">🔥</span></p>
+                            <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Global Ops</p>
+                            <p className="text-4xl font-black text-white italic">+{counter} <span className="text-orange-500 text-2xl">🔥</span></p>
                         </div>
                     </div>
 
                     {/* Stats Dashboard */}
                     <div className="space-y-4">
-                        <div className="glass-card p-8 space-y-1 relative overflow-hidden shimmer">
-                            <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em] mb-1">Modo de Red</p>
+                        <div className="glass-card p-8 relative overflow-hidden shimmer">
+                            <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.3em] mb-1">Motor del Sistema</p>
                             <div className="flex justify-between items-center">
                                 <h2 className="text-4xl font-black italic uppercase tracking-tighter">Bypass V8</h2>
-                                <div className="p-3 bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-400" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                    </svg>
+                                <div className="p-3 bg-indigo-500/10 rounded-2xl border border-indigo-500/20 text-indigo-400">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                                 </div>
                             </div>
                         </div>
@@ -117,82 +116,64 @@
                         <div className="grid grid-cols-2 gap-4">
                              <div className="glass-card p-6 border-l-2 border-l-green-500/30">
                                 <p className="text-[10px] font-black text-gray-500 uppercase mb-2">Retención</p>
-                                <p className="text-4xl font-black neo-green italic">85%</p>
+                                <p className="text-4xl font-black neo-green italic">98%</p>
                             </div>
                             <div className="glass-card p-6 border-l-2 border-l-indigo-500/30">
-                                <p className="text-[10px] font-black text-gray-500 uppercase mb-2 italic tracking-widest">Viral Mode</p>
-                                <p className="text-3xl font-black italic uppercase leading-none">ON</p>
+                                <p className="text-[10px] font-black text-gray-500 uppercase mb-2 italic">Modo</p>
+                                <p className="text-3xl font-black italic uppercase leading-none">VIP</p>
                             </div>
                         </div>
                     </div>
 
-                    {/* Activación */}
+                    {/* Botón de Activación */}
                     <div className="space-y-4">
-                        <div className="flex items-center gap-2 px-2">
-                             <div className="w-8 h-8 bg-indigo-500/10 rounded-lg flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                </svg>
-                             </div>
-                            <h3 className="text-[11px] font-black uppercase tracking-[0.25em] text-gray-400">Activación de Nodo</h3>
-                        </div>
-
                         {!verified ? (
                             <button 
-                                onClick={handleAction}
-                                className="w-full bg-[#5249f3] p-6 rounded-[35px] flex items-center justify-between group shadow-2xl active:scale-95 transition-all"
+                                onClick={handleVerify}
+                                className="w-full bg-[#5249f3] p-6 rounded-[35px] flex items-center justify-between shadow-2xl active:scale-95 transition-all"
                             >
                                 <div className="flex items-center gap-5 text-left">
                                     <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-black shadow-xl">
-                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
-                                        </svg>
+                                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                                     </div>
                                     <div className="space-y-0.5">
-                                        <p className="text-[18px] font-black italic uppercase leading-none">Paso 1: Follow Maestro</p>
-                                        <p className="text-[10px] opacity-80 font-medium italic">Toca para seguir a @z22 en TikTok</p>
+                                        <p className="text-[18px] font-black italic uppercase leading-none text-white">Paso 1: Activar</p>
+                                        <p className="text-[10px] opacity-80 font-medium italic text-white/80">Sigue a @z22 en TikTok</p>
                                     </div>
                                 </div>
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 opacity-40 group-active:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                             </button>
                         ) : (
-                            <div className="w-full verify-gradient p-7 rounded-[35px] flex items-center gap-5 animate-in zoom-in duration-500 shadow-[0_0_50px_rgba(34,197,94,0.15)]">
-                                <div className="w-14 h-14 bg-green-500 rounded-2xl flex items-center justify-center text-black shadow-[0_0_25px_rgba(34,197,94,0.5)]">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M10 2a5 5 0 00-5 5v2a2 2 0 00-2 2v5a2 2 0 002 2h10a2 2 0 002-2v-5a2 2 0 00-2-2H7V7a3 3 0 016 0v2h2V7a5 5 0 00-5-5z" />
-                                    </svg>
+                            <div className="w-full bg-[#0d1a13] border border-green-500/30 p-7 rounded-[35px] flex items-center gap-5 shadow-[0_0_50px_rgba(34,197,94,0.15)]">
+                                <div className="w-14 h-14 bg-green-500 rounded-2xl flex items-center justify-center text-black">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                 </div>
                                 <div className="text-left">
-                                    <p className="text-[24px] font-black neo-green italic uppercase leading-none">Nodo Verificado</p>
-                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mt-1 italic">Algoritmo Desbloqueado</p>
+                                    <p className="text-[24px] font-black neo-green italic uppercase leading-none">Verificado</p>
+                                    <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest mt-1 italic">Acceso Concedido</p>
                                 </div>
                             </div>
                         )}
                     </div>
 
-                    {/* Footer List */}
-                    <div className="space-y-4">
+                    {/* Live Feed */}
+                    <div className="space-y-4 pt-4">
                         <div className="flex justify-between items-center px-2">
                              <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] italic flex items-center gap-2">
-                                Monitoreo en tiempo real
+                                Actividad Global
                                 <span className="w-1.5 h-1.5 bg-pink-500 rounded-full animate-pulse"></span>
                              </p>
-                             <div className="px-3 py-1 bg-pink-500/10 text-pink-500 text-[10px] font-black rounded-full border border-pink-500/20 uppercase italic">Live</div>
+                             <div className="px-3 py-1 bg-pink-500/10 text-pink-500 text-[10px] font-black rounded-full border border-pink-500/20 uppercase">Live</div>
                         </div>
                         <div className="glass-card h-40 flex flex-col items-center justify-center border-dashed border-white/10 relative overflow-hidden">
-                             <div className="absolute inset-0 shimmer opacity-10"></div>
-                             <p className="text-[11px] font-black italic uppercase tracking-[0.4em] text-white/40">Sincronizando nodos...</p>
+                             <div className="absolute inset-0 shimmer opacity-20"></div>
+                             <p className="text-[11px] font-black italic uppercase tracking-[0.4em] text-white/40">Buscando nuevos perfiles...</p>
                         </div>
                     </div>
 
-                    {/* Botón Final */}
-                    <button className="w-full btn-viral py-7 text-[13px] font-black uppercase tracking-[0.2em] italic flex items-center justify-center gap-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                        </svg>
-                        Obtener mi enlace viral
+                    {/* Footer Button */}
+                    <button className="w-full btn-viral py-7 text-[13px] font-black uppercase tracking-[0.2em] italic flex items-center justify-center gap-3 text-white">
+                        Generar mi enlace VIP
                     </button>
                 </div>
             );
@@ -203,4 +184,5 @@
     </script>
 </body>
 </html>
+
 
